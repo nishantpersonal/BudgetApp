@@ -107,9 +107,6 @@ var budgetController=(function(){
             });
             return allPer;
         },
-        testing:function(){
-            return data;
-        },
         getBudget:function(){
             return{
                 budget:data.budget,
@@ -160,6 +157,11 @@ var UIController=(function(){
             
             return (type==='exp'?'-':'+')+' '+int+'.'+dec;
         };
+    var nodeListForEach=function(list,callback){
+              for(var i=0;i<list.length;i++){
+                  callback(list[i],i);
+                }  
+            };
    
     return{
         
@@ -237,12 +239,6 @@ var UIController=(function(){
         displayPercentages:function(percentages){
             var fields=document.querySelectorAll(DOMstrings.expensesPercentageLabel);
             
-            var nodeListForEach=function(list,callback){
-              for(var i=0;i<list.length;i++){
-                  callback(list[i],i);
-                }  
-            };
-            
             nodeListForEach(fields,function(current,index){
                 if(percentages[index]>0)
                     current.textContent=percentages[index] + '%';
@@ -263,6 +259,18 @@ var UIController=(function(){
             month=now.getMonth();
             
             document.querySelector(DOMstrings.monthAndYearLabel).textContent=months[month]+' '+year;
+        },
+        changeType:function(){
+            var fields=document.querySelectorAll(DOMstrings.inputType+','+
+                                                DOMstrings.intputDesc+','+
+                                                DOMstrings.inputValue);
+            
+            nodeListForEach(fields,function(cur){
+                cur.classList.toggle('red-focus');
+            })
+            
+            document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
+            
         },
         
         getDOMStrings:function(){
@@ -287,6 +295,8 @@ var appController=(function(bdgtCntrl,UICntrl){
         });
         
         document.querySelector(DOM.container).addEventListener('click',ctrlDeleteItem);
+        
+        document.querySelector(DOM.inputType).addEventListener('change',UICntrl.changeType);
     };
     
     var updatePercentages=function(){

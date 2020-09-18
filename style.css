@@ -134,6 +134,7 @@ body {
     margin-right: 10px;
     font-weight: 600;
     transition: border 0.3s;
+    border-radius: 5px;
 }
 
 .add__description,
